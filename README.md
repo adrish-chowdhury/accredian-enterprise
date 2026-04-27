@@ -22,7 +22,7 @@ A pixel-faithful yet improved rebuild of [enterprise.accredian.com](https://ente
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/accredian-enterprise.git
+git clone https://github.com/adrish-chowdhury/accredian-enterprise.git
 cd accredian-enterprise
 
 # 2. Install dependencies

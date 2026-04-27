@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 const navLinks = [
   { label: "Solutions", href: "#features" },
   { label: "How It Works", href: "#how-it-works" },
-  { label: "Programs", href: "#partners" },
+  { label: "Programs", href: "#features" },
   { label: "Testimonials", href: "#testimonials" },
   { label: "Partners", href: "#partners" },
 ];
@@ -74,7 +74,7 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-6">
               {navLinks.map((link) => (
                 <button
-                  key={link.href}
+                  key={link.label}
                   onClick={() => handleNavClick(link.href)}
                   className={`text-sm font-medium transition-colors duration-200 cursor-pointer hover:text-amber-500 ${
                     scrolled ? "text-gray-600" : "text-white/90"
@@ -125,7 +125,7 @@ export default function Navbar() {
             <div className="px-4 py-3 space-y-1">
               {navLinks.map((link) => (
                 <button
-                  key={link.href}
+                  key={link.label}
                   onClick={() => handleNavClick(link.href)}
                   className="block w-full text-left px-3 py-2 text-gray-700 hover:text-blue-800 hover:bg-blue-50 rounded-lg text-sm font-medium transition-colors cursor-pointer"
                 >

@@ -43,7 +43,6 @@ const steps = [
 
 export default function HowItWorks() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -53,36 +52,17 @@ export default function HowItWorks() {
         if (entry.isIntersecting) {
           el.classList.remove("section-hidden");
           el.classList.add("section-visible");
+          observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.05 }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const observers = stepRefs.current.map((el, i) => {
-      if (!el) return null;
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => {
-              el.classList.remove("section-hidden");
-              el.classList.add("section-visible");
-            }, i * 150);
-          }
-        },
-        { threshold: 0.2 }
-      );
-      observer.observe(el);
-      return observer;
-    });
-    return () => observers.forEach((o) => o?.disconnect());
-  }, []);
-
   return (
-    <section id="how-it-works" className="py-20 bg-white">
+    <section id="how-it-works" className="py-20 bg-white overflow-hidden">
       <div
         ref={sectionRef}
         className="section-hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
@@ -100,17 +80,13 @@ export default function HowItWorks() {
         </div>
 
         {/* Steps */}
-        <div className="relative">
+        <div className="relative mb-14">
           {/* Connecting line (desktop) */}
           <div className="hidden lg:block absolute top-16 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-blue-200 via-blue-400 to-blue-200 z-0" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {steps.map((step, i) => (
-              <div
-                key={step.step}
-                ref={(el) => { stepRefs.current[i] = el; }}
-                className="section-hidden relative z-10"
-              >
+            {steps.map((step) => (
+              <div key={step.step} className="relative z-10 flex flex-col">
                 {/* Step number circle */}
                 <div className="flex flex-col items-center mb-6">
                   <div className="w-14 h-14 rounded-full bg-blue-800 flex items-center justify-center shadow-lg shadow-blue-200 mb-3">
@@ -120,10 +96,10 @@ export default function HowItWorks() {
                 </div>
 
                 {/* Card */}
-                <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100 h-full hover:border-blue-200 hover:shadow-md transition-all duration-300">
-                  <div className="flex items-center justify-between mb-3">
+                <div className="flex-1 bg-gray-50 rounded-2xl p-5 border border-gray-100 hover:border-blue-200 hover:shadow-md transition-all duration-300">
+                  <div className="flex items-start justify-between gap-2 mb-3">
                     <h3 className="font-black text-gray-900">{step.title}</h3>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-semibold whitespace-nowrap">
+                    <span className="flex-shrink-0 text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-semibold">
                       {step.duration}
                     </span>
                   </div>
@@ -144,9 +120,9 @@ export default function HowItWorks() {
           </div>
         </div>
 
-        {/* CTA */}
-        <div className="mt-14 text-center">
-          <p className="text-gray-600 mb-4">
+        {/* CTA — separated with clear spacing */}
+        <div className="border-t border-gray-100 pt-10 text-center">
+          <p className="text-gray-600 mb-6">
             Ready to transform your workforce? Most clients see measurable results within 90 days.
           </p>
           <a
